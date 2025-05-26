@@ -23,4 +23,21 @@ public class DriverService {
             throw new DriverNotFoundException("Driver not found");
         }
     }
+
+    public Driver saveDriver(Driver driver) {
+        return driverRepository.save(driver);
+    }
+
+    public Driver updateDriver (Long id, Driver updated) {
+        Driver driver = findDriverById(id);
+        driver.setName(updated.getName());
+        driver.setSalary(updated.getSalary());
+        driver.setTrainId(updated.getTrainId());
+        return driverRepository.save(driver);
+    }
+
+    public void deleteDriver(Long id){
+        Driver driver = findDriverById(id);
+        driverRepository.delete(driver);
+    }
 }

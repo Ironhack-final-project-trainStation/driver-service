@@ -8,10 +8,7 @@ import driver_service.driver_service.service.DriverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +38,32 @@ public class DriverController {
             return  new ResponseEntity<>(response, HttpStatus.OK);
         } catch (DriverNotFoundException exception) {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<Driver> createDriver (@RequestBody Driver driver) {
+        Driver newDriver = driverService.saveDriver(driver);
+        return new ResponseEntity<>(newDriver, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateDriver(@PathVariable Long id, @RequestBody Driver driver) {
+        try {
+            Driver updatedDriver = driverService.updateDriver(id, driver);
+            return new ResponseEntity<>(updatedDriver, HttpStatus.OK);
+        } catch (DriverNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteDriver (@PathVariable Long id) {
+        try {
+            driverService.deleteDriver(id);
+            return new ResponseEntity<>("Driver deleted succesfully", HttpStatus.OK);
+        } catch (DriverNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 }

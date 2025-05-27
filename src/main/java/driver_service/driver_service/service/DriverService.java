@@ -1,5 +1,6 @@
 package driver_service.driver_service.service;
 
+import driver_service.driver_service.dtos.DriverDTO;
 import driver_service.driver_service.exceptions.DriverNotFoundException;
 import driver_service.driver_service.models.Driver;
 import driver_service.driver_service.repositories.DriverRepository;
@@ -24,12 +25,15 @@ public class DriverService {
         }
     }
 
-    public Driver findByTrainId(String trainID) throws DriverNotFoundException{
-        return driverRepository.findByTrainId(trainID)
-                .orElseThrow(() -> new DriverNotFoundException("Driver not found for train: " + trainID));
-
+    public DriverDTO findByTrainId(String trainID) throws DriverNotFoundException{
+        Optional<Driver> driver = driverRepository.findByTrainId(trainID);
+        if(driver.isPresent()) {
+            Driver d =driver.get();
+            return new DriverDTO(d.getId(), d.getName());
+        } else {
+            throw  new DriverNotFoundException("Driver not found for train: " + trainID);
+         }
     }
-
 
 
     public Driver saveDriver(Driver driver) {

@@ -24,6 +24,12 @@ public class DriverService {
         }
     }
 
+    public Driver findByTrainId(String trainID) throws DriverNotFoundException{
+        return driverRepository.findByTrainId(trainID)
+                .orElseThrow(() -> new DriverNotFoundException("Driver not found for train: " + trainID));
+
+    }
+
 
 
     public Driver saveDriver(Driver driver) {

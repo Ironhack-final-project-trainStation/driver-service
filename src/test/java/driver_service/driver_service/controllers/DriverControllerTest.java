@@ -56,4 +56,20 @@ public class DriverControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("Driver not found"));
     }
+
+    @Test
+    void testGetDriverByTrainId_AlsoReturnsTrain() throws Exception {
+        Driver mockDriver = new Driver(6L, "Pedro", 58000 , "train1");
+        TrainDTO mockTrain = new TrainDTO("train1", "Cordoba");
+
+        Mockito.when(driverService.findByTrainId("train1")).thenReturn(mockDriver);
+        Mockito.when(trainFeignClient.getTrainById("train1")).thenReturn(mockTrain);
+
+        mockMvc.perform(get("/api/driver/train/train1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.Train.destination").value("Cordoba"))
+                .andExpect(jsonPath("$.Driver.name").value("Pedro"));
+
+
+    }
 }

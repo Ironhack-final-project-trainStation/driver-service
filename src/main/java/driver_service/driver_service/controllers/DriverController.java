@@ -41,6 +41,23 @@ public class DriverController {
         }
     }
 
+    @GetMapping("/train/{trainId}")
+    public ResponseEntity<?> getDriverByTrainId(@PathVariable String trainId){
+        try{
+            Driver driver = driverService.findByTrainId(trainId);
+            TrainDTO foundTrain = trainFeignClient.getTrainById(trainId);
+            System.out.println(foundTrain);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("Driver", driver);
+            response.put("Train", foundTrain);
+
+            return  new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (DriverNotFoundException exception) {
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PostMapping
     public ResponseEntity<Driver> createDriver (@RequestBody Driver driver) {
         Driver newDriver = driverService.saveDriver(driver);

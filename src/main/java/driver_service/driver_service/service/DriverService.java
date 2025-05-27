@@ -29,7 +29,7 @@ public class DriverService {
         Optional<Driver> driver = driverRepository.findByTrainId(trainID);
         if(driver.isPresent()) {
             Driver d =driver.get();
-            return new DriverDTO(d.getId(), d.getName());
+            return new DriverDTO(d.getId(), d.getName(), d.getTrainId());
         } else {
             throw  new DriverNotFoundException("Driver not found for train: " + trainID);
          }

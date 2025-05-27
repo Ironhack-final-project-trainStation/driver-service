@@ -11,4 +11,5 @@ public class DriverDTO {
 
     private Long id;
     private String name;
+    private String trainId;
 }

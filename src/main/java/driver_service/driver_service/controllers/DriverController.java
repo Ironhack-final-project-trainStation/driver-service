@@ -1,5 +1,6 @@
 package driver_service.driver_service.controllers;
 
+import driver_service.driver_service.dtos.DriverDTO;
 import driver_service.driver_service.dtos.TrainDTO;
 import driver_service.driver_service.exceptions.DriverNotFoundException;
 import driver_service.driver_service.feignclients.TrainFeignClient;
@@ -44,7 +45,7 @@ public class DriverController {
     @GetMapping("/train/{trainId}")
     public ResponseEntity<?> getDriverByTrainId(@PathVariable String trainId){
         try{
-            Driver driver = driverService.findByTrainId(trainId);
+            DriverDTO driver = driverService.findByTrainId(trainId);
             TrainDTO foundTrain = trainFeignClient.getTrainById(trainId);
             System.out.println(foundTrain);
 
@@ -78,7 +79,7 @@ public class DriverController {
     public ResponseEntity<?> deleteDriver (@PathVariable Long id) {
         try {
             driverService.deleteDriver(id);
-            return new ResponseEntity<>("Driver deleted succesfully", HttpStatus.OK);
+            return new ResponseEntity<>("Driver deleted successfully", HttpStatus.OK);
         } catch (DriverNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }

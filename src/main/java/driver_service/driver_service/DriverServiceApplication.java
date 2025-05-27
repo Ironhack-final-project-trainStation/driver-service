@@ -5,7 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
-@EnableFeignClients
+@EnableFeignClients(basePackages = "driver_service.driver_service.feignclients")
+
 public class DriverServiceApplication {
 
 	public static void main(String[] args) {

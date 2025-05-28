@@ -46,14 +46,8 @@ public class DriverController {
     public ResponseEntity<?> getDriverByTrainId(@PathVariable String trainId){
         try{
             DriverDTO driver = driverService.findByTrainId(trainId);
-            TrainDTO foundTrain = trainFeignClient.getTrainById(trainId);
-            System.out.println(foundTrain);
 
-            Map<String, Object> response = new HashMap<>();
-            response.put("Driver", driver);
-            response.put("Train", foundTrain);
-
-            return  new ResponseEntity<>(response, HttpStatus.OK);
+            return  new ResponseEntity<>(driver, HttpStatus.OK);
         } catch (DriverNotFoundException exception) {
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
         }

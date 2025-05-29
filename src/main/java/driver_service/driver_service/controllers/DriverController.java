@@ -6,14 +6,16 @@ import driver_service.driver_service.exceptions.DriverNotFoundException;
 import driver_service.driver_service.feignclients.TrainFeignClient;
 import driver_service.driver_service.models.Driver;
 import driver_service.driver_service.service.DriverService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-
+@Validated
 @RestController
 @RequestMapping("api/driver")
 public class DriverController {
@@ -54,13 +56,13 @@ public class DriverController {
     }
 
     @PostMapping
-    public ResponseEntity<Driver> createDriver (@RequestBody Driver driver) {
+    public ResponseEntity<Driver> createDriver (@RequestBody @Valid Driver driver) {
         Driver newDriver = driverService.saveDriver(driver);
         return new ResponseEntity<>(newDriver, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateDriver(@PathVariable Long id, @RequestBody Driver driver) {
+    public ResponseEntity<?> updateDriver(@PathVariable Long id, @RequestBody @Valid Driver driver) {
         try {
             Driver updatedDriver = driverService.updateDriver(id, driver);
             return new ResponseEntity<>(updatedDriver, HttpStatus.OK);

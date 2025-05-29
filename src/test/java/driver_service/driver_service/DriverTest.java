@@ -30,7 +30,7 @@ public class DriverTest {
 
         Optional<Driver> found = driverRepository.findById(testDriver.getId());
         assertEquals("Jose Luis Perez", found.get().getName());
-        //driverRepository.delete(testDriver);
+        driverRepository.delete(testDriver);
 
     }
 
